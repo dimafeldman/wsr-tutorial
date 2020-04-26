@@ -74,6 +74,7 @@ export default class Form extends React.Component {
                       <Col span={6}>
                         <FormField label="Name" required>
                           <Input
+                            dataHook="input-name"
                             size="normal"
                             placeholder="Enter a name"
                             required
@@ -87,6 +88,7 @@ export default class Form extends React.Component {
                       <Col span={6}>
                         <FormField label="Favorite Color">
                           <Dropdown
+                            dataHook="input-color"
                             placeholder="Select a color"
                             value={draft.color}
                             onSelect={(selection) => this.handleChange('color', selection.value)}
@@ -101,17 +103,21 @@ export default class Form extends React.Component {
                     </Row>
                     <Row>
                       <Col span={8}>
-                        <Checkbox checked={draft.terms} onChange={() => this.handleChange('terms', !draft.terms)}>
+                        <Checkbox
+                          dataHook="input-tos"
+                          checked={draft.terms}
+                          onChange={() => this.handleChange('terms', !draft.terms)}
+                        >
                           I agree to the terms of use
                         </Checkbox>
                       </Col>
                       <Col span={4}>
                         <Row>
                           <Col span={6}>
-                            <Button skin="standard" priority="secondary" onClick={this.handleClear}>Clear</Button>
+                            <Button skin="standard" dataHook="button-clear" priority="secondary" onClick={this.handleClear}>Clear</Button>
                           </Col>
                           <Col span={6}>
-                            <Button skin="standard" disabled={submitDisalbed} onClick={this.handleSubmit}>Submit</Button>
+                            <Button skin="standard" dataHook="button-submit" disabled={submitDisalbed} onClick={this.handleSubmit}>Submit</Button>
                           </Col>
                         </Row>
                       </Col>
@@ -128,6 +134,7 @@ export default class Form extends React.Component {
                       <Card.Content>
                         <FormField label="Fun Fact">
                           <InputArea
+                            dataHook="input-fun-fact"
                             placeholder="Enter something interesting"
                             value={draft.funFact}
                             rows={4}

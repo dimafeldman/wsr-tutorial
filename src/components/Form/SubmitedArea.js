@@ -12,7 +12,7 @@ export default function SubmitedArea({ saved }) {
             <Text weight="normal">Name:</Text>
           </Col>
           <Col span="6">
-            <Text weight="normal">{saved.name}</Text>
+            <Text weight="normal" dataHook="result-name">{saved.name}</Text>
           </Col>
         </Row>
         <Row>
@@ -20,7 +20,7 @@ export default function SubmitedArea({ saved }) {
             <Text weight="normal">Favorite Color:</Text>
           </Col>
           <Col span="6">
-            <Text weight="normal">{saved.color}</Text>
+            <Text weight="normal" dataHook="result-color">{saved.color}</Text>
           </Col>
         </Row>
         <Row>
@@ -28,7 +28,7 @@ export default function SubmitedArea({ saved }) {
             <Text weight="normal">Fun Fact:</Text>
           </Col>
           <Col span="6">
-            <Text weight="normal">{saved.funFact}</Text>
+            <Text weight="normal" dataHook="result-fun-fact">{saved.funFact}</Text>
           </Col>
         </Row>
       </Card.Content>
