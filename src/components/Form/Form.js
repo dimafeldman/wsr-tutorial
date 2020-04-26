@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import { Container, Box, Page, FormField, Input, InputArea, Row, Col, Card, Dropdown, Checkbox, Button, Text } from 'wix-style-react';
+import { Container, Box, Page, FormField, Input, InputArea, Row, Col, Card, Dropdown, Checkbox, Button } from 'wix-style-react';
+import SubmitedArea from './SubmitedArea';
 
 export default class Form extends React.Component {
   constructor(props) {
@@ -140,36 +141,7 @@ export default class Form extends React.Component {
                 {!_.isEmpty(saved) && (
                   <Row>
                     <Col>
-                      <Card>
-                        <Card.Header title="Submited Info" />
-                        <Card.Divider />
-                        <Card.Content>
-                          <Row>
-                            <Col span="6">
-                              <Text weight="normal">Name:</Text>
-                            </Col>
-                            <Col span="6">
-                              <Text weight="normal">{saved.name}</Text>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col span="6">
-                              <Text weight="normal">Favorite Color:</Text>
-                            </Col>
-                            <Col span="6">
-                              <Text weight="normal">{saved.color}</Text>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col span="6">
-                              <Text weight="normal">Fun Fact:</Text>
-                            </Col>
-                            <Col span="6">
-                              <Text weight="normal">{saved.funFact}</Text>
-                            </Col>
-                          </Row>
-                        </Card.Content>
-                      </Card>
+                      <SubmitedArea saved={saved} />
                     </Col>
                   </Row>
                 )}
