@@ -1,23 +1,55 @@
 import React from 'react';
-import { Container, Box, Page, FormField, Input, InputArea, Row, Col, Card, Dropdown, Checkbox, Button } from 'wix-style-react';
+import _ from 'lodash';
+import { Container, Box, Page, FormField, Input, InputArea, Row, Col, Card, Dropdown, Checkbox, Button, Text } from 'wix-style-react';
 
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      color: '',
-      funFact: '',
-      terms: false,
+      draft: {
+        name: '',
+        color: '',
+        funFact: '',
+        terms: false,
+      },
+      saved: {},
     };
   }
 
   handleChange(key, value) {
-    this.setState({ [key]: value });
+    this.setState((currState) => {
+      const nextState = _.cloneDeep(currState);
+      nextState.draft[key] = value;
+
+      return nextState;
+    });
   }
 
+  handleClear = () => {
+    this.setState({
+      draft: {
+        name: '',
+        color: '',
+        funFact: '',
+        terms: false,
+      },
+      saved: {},
+    });
+  };
+
+  handleSubmit = () => {
+    this.setState((currState) => {
+      const nextState = _.cloneDeep(currState);
+      nextState.saved = _.cloneDeep(nextState.draft);
+
+      return nextState;
+    });
+  };
+
   render() {
-    const { name, color, terms, funFact } = this.state;
+    const { draft, saved } = this.state;
+    const submitDisalbed = !draft.name || !draft.terms;
+
     return (
       <Container>
         <Page>
@@ -25,8 +57,8 @@ export default class Form extends React.Component {
             title="WSR Form"
             actionsBar={(
               <Box align="space-between" width="200">
-                <Button skin="standard" priority="secondary">Clear</Button>
-                <Button skin="standard">Submit</Button>
+                <Button skin="standard" priority="secondary" onClick={this.handleClear}>Clear</Button>
+                <Button skin="standard" disabled={submitDisalbed} onClick={this.handleSubmit}>Submit</Button>
               </Box>
             )}
           />
@@ -44,7 +76,7 @@ export default class Form extends React.Component {
                             size="normal"
                             placeholder="Enter a name"
                             required
-                            value={name}
+                            value={draft.name}
                             onChange={(e) => this.handleChange('name', e.target.value)}
                           />
                         </FormField>
@@ -55,8 +87,8 @@ export default class Form extends React.Component {
                         <FormField label="Favorite Color">
                           <Dropdown
                             placeholder="Select a color"
-                            value={color}
-                            onChange={(e) => this.handleChange('color', e.target.value)}
+                            value={draft.color}
+                            onSelect={(selection) => this.handleChange('color', selection.value)}
                             options={[
                               { id: 'red', value: 'Red' },
                               { id: 'green', value: 'Green' },
@@ -68,17 +100,17 @@ export default class Form extends React.Component {
                     </Row>
                     <Row>
                       <Col span={8}>
-                        <Checkbox checked={terms} onChange={() => this.handleChange('terms', !terms)}>
+                        <Checkbox checked={draft.terms} onChange={() => this.handleChange('terms', !draft.terms)}>
                           I agree to the terms of use
                         </Checkbox>
                       </Col>
                       <Col span={4}>
                         <Row>
                           <Col span={6}>
-                            <Button skin="standard" priority="secondary">Clear</Button>
+                            <Button skin="standard" priority="secondary" onClick={this.handleClear}>Clear</Button>
                           </Col>
                           <Col span={6}>
-                            <Button skin="standard">Submit</Button>
+                            <Button skin="standard" disabled={submitDisalbed} onClick={this.handleSubmit}>Submit</Button>
                           </Col>
                         </Row>
                       </Col>
@@ -87,20 +119,60 @@ export default class Form extends React.Component {
                 </Card>
               </Col>
               <Col span={4}>
-                <Card>
-                  <Card.Header title="Extra" />
-                  <Card.Divider />
-                  <Card.Content>
-                    <FormField label="Fun Fact">
-                      <InputArea
-                        placeholder="Enter something interesting"
-                        value={funFact}
-                        rows={4}
-                        onChange={(e) => this.handleChange('funFact', e.target.value)}
-                      />
-                    </FormField>
-                  </Card.Content>
-                </Card>
+                <Row>
+                  <Col>
+                    <Card>
+                      <Card.Header title="Extra" />
+                      <Card.Divider />
+                      <Card.Content>
+                        <FormField label="Fun Fact">
+                          <InputArea
+                            placeholder="Enter something interesting"
+                            value={draft.funFact}
+                            rows={4}
+                            onChange={(e) => this.handleChange('funFact', e.target.value)}
+                          />
+                        </FormField>
+                      </Card.Content>
+                    </Card>
+                  </Col>
+                </Row>
+                {!_.isEmpty(saved) && (
+                  <Row>
+                    <Col>
+                      <Card>
+                        <Card.Header title="Submited Info" />
+                        <Card.Divider />
+                        <Card.Content>
+                          <Row>
+                            <Col span="6">
+                              <Text weight="normal">Name:</Text>
+                            </Col>
+                            <Col span="6">
+                              <Text weight="normal">{saved.name}</Text>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col span="6">
+                              <Text weight="normal">Favorite Color:</Text>
+                            </Col>
+                            <Col span="6">
+                              <Text weight="normal">{saved.color}</Text>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col span="6">
+                              <Text weight="normal">Fun Fact:</Text>
+                            </Col>
+                            <Col span="6">
+                              <Text weight="normal">{saved.funFact}</Text>
+                            </Col>
+                          </Row>
+                        </Card.Content>
+                      </Card>
+                    </Col>
+                  </Row>
+                )}
               </Col>
             </Row>
           </Page.Content>
